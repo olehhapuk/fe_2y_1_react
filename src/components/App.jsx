@@ -3,10 +3,16 @@ import products from './ProductList/products.json';
 import Container from './Container';
 import Section from './Section';
 import Alert from './Alert';
+import Profile from './Profile/Profile';
+
+// import user json
 
 function App() {
   return (
     <div>
+      {/* HW */}
+      {/* <Profile avatar={} location={} stats={} tag={} username={} /> add data from json */}
+
       <Container>
         <Alert variation="info">Default alert</Alert>
         <Alert variation="success">Default alert</Alert>

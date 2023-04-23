@@ -1,18 +1,15 @@
-import './Alert.css';
 import clsx from 'clsx';
 
-function Alert({ children, variation, outlined, elevated }) {
-  // const classes = ['alert', variation];
-  // if (outlined) {
-  //   classes.push('outlined');
-  // }
-  // if (elevated) {
-  //   classes.push('elevated');
-  // }
-  // classes.join(' ')
+import styles from './Alert.module.css';
 
+function Alert({ children, variation, outlined, elevated }) {
   return (
-    <div className={clsx('alert', variation, { outlined, elevated })}>
+    <div
+      className={clsx(styles[variation], {
+        [styles.outlined]: outlined,
+        [styles.elevated]: elevated,
+      })}
+    >
       {children}
     </div>
   );

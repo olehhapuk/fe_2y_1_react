@@ -1,10 +1,11 @@
-import './Section.css';
+import styles from './Section.module.scss';
 
 function Section({ title, children }) {
   return (
-    <section className="section__container">
-      <h2 className="section__title">{title}</h2>
-      <div className="section__content">{children}</div>
+    <section className={styles.container}>
+      <h2 className={styles.title}>{title}</h2>
+      <h3 className={styles.title__sub}>subtitle</h3>
+      <div className={styles.box}>{children}</div>
     </section>
   );
 }

@@ -1,0 +1,13 @@
+.name {
+  font-size: 18px;
+}
+
+.nameAvailable {
+  composes: name;
+  color: green;
+}
+
+.nameUnavailable {
+  composes: name;
+  color: red;
+}
