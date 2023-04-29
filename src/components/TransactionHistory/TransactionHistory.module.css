@@ -1,0 +1,19 @@
+.table {
+  font-family: sans-serif;
+  border-collapse: collapse;
+  border: 1px solid #dfdfdf;
+}
+
+.table thead {
+  background-color: #16c4eb;
+}
+
+.table td,
+.table th {
+  padding: 8px 20px;
+  text-align: center;
+}
+
+.table tbody tr:nth-child(2n) {
+  background-color: #dfdfdf;
+}
