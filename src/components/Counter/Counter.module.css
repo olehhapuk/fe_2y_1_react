@@ -1,0 +1,19 @@
+.value {
+  font-size: 30px;
+  font-family: sans-serif;
+}
+
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #279af1;
+  color: #fff;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.btn:hover {
+  background-color: #3085f3;
+}

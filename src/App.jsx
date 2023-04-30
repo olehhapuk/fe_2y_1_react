@@ -1,18 +1,9 @@
-import TransactionHistory from './components/TransactionHistory/TransactionHistory';
-import transactions from './components/TransactionHistory/transactions.json';
+import Counter from './components/Counter/Counter';
 
 function App() {
   return (
     <div>
-      {/* <Profile
-        username={user.username}
-        tag={user.tag}
-        location={user.location}
-        avatar={user.avatar}
-        stats={user.stats}
-      /> */}
-      {/* <FriendList friends={friends} /> */}
-      <TransactionHistory items={transactions} />
+      <Counter initialValue={15} />
     </div>
   );
 }
