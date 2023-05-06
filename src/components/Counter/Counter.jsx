@@ -1,21 +1,32 @@
 import { useState } from 'react';
 
-import styles from './Counter.module.css';
+import CounterActions from './CounterActions';
+import CounterDisplay from './CounterDisplay';
 
-const Counter = ({ initialValue }) => {
-  const [value, setValue] = useState(0);
+const Counter = ({ initialValue, step }) => {
+  const [value, setValue] = useState(initialValue);
 
   function handleDecrementClick() {
-    setValue(value - 1);
+    // setValue((prevValue) => prevValue - step); // value = 0; prevValue = 0; newValue = -1
+    // setValue((prevValue) => prevValue - step); // value = 0; prevValue = -1; newValue = -2
+    // setValue((prevValue) => prevValue - step);
+    // setValue((prevValue) => prevValue - step);
+    // setValue((prevValue) => prevValue - step);
+
+    setValue((prevValue) => prevValue - step);
+  }
+
+  function handleIncrementClick() {
+    setValue((prevValue) => prevValue + step);
   }
 
   return (
     <div>
-      <p className={styles.value}>{value}</p>
-      <button className={styles.btn} onClick={handleDecrementClick}>
-        -
-      </button>
-      <button className={styles.btn}>+</button>
+      <CounterDisplay counterValue={value} />
+      <CounterActions
+        onDecrement={handleDecrementClick}
+        onIncrement={handleIncrementClick}
+      />
     </div>
   );
 };
