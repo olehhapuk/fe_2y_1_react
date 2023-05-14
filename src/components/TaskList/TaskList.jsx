@@ -1,7 +1,7 @@
 import TaskItem from '../TaskItem/TaskItem';
 import styles from './TaskList.module.css';
 
-function TaskList({ tasks, onRemove }) {
+function TaskList({ tasks, onRemove, onUpdate }) {
   return (
     <ul className={styles.list}>
       {tasks.map((task) => (
@@ -11,6 +11,7 @@ function TaskList({ tasks, onRemove }) {
           text={task.text}
           completed={task.completed}
           onRemove={onRemove}
+          onUpdate={onUpdate}
         />
       ))}
     </ul>

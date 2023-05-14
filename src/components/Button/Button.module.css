@@ -13,3 +13,13 @@
   outline: none;
   background-color: #3085f3;
 }
+
+.red {
+  composes: btn;
+  background-color: #eb434f;
+}
+
+.red:hover,
+.red:focus {
+  background-color: #df3843;
+}
