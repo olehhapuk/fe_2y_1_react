@@ -1,92 +1,26 @@
-import { useState } from 'react';
-import { nanoid } from 'nanoid';
-
-import Container from './components/Container/Container';
-import TaskList from './components/TaskList/TaskList';
-import TaskEditor from './components/TaskEditor/TaskEditor';
-import Input from './components/Input/Input';
-import Section from './components/Section';
-import Button from './components/Button/Button';
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [tasks, setTasks] = useState([]);
-  const [query, setQuery] = useState('');
+  const [counter, setCounter] = useState(0);
+  const [counter1, setCounter1] = useState(0);
 
-  function createTask(text) {
-    const newTask = {
-      text: text,
-      completed: false,
-      id: nanoid(),
-    };
-
-    setTasks((prevTasks) => [newTask, ...prevTasks]);
-  }
-
-  function removeTask(id) {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-  }
-
-  function updateTask(id, completed) {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) => {
-        if (task.id === id) {
-          const updatedTask = {
-            ...task,
-            completed,
-          };
-
-          return updatedTask;
-        } else {
-          return task;
-        }
-      })
-    );
-  }
-
-  function reverseTasks() {
-    // Перед сортуванням через sort теж робимо копію
-    // setTasks((prevTasks) => [...prevTasks].reverse()); // Spread operator
-    // setTasks([...tasks].reverse()); // Spread operator
-    setTasks(tasks.slice().reverse()); // Slice method
-  }
-
-  const filteredTasks = tasks.filter((task) => {
-    return task.text.includes(query);
-    // if (task.text.includes(query)) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
+  useEffect(() => {
+    console.log('render');
   });
 
+  useEffect(() => {
+    console.log('first render');
+  }, []);
+
+  useEffect(() => {
+    console.log('counter render');
+  }, [counter]);
+
   return (
-    <Container>
-      <Section title="Create todo">
-        <TaskEditor onCreate={createTask} />
-      </Section>
-
-      <Section title="Search">
-        <Input
-          placeholder="Search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </Section>
-
-      <Section title="Tasks">
-        <Button onClick={reverseTasks}>Reverse</Button>
-
-        {filteredTasks.length > 0 ? (
-          <TaskList
-            tasks={filteredTasks}
-            onRemove={removeTask}
-            onUpdate={updateTask}
-          />
-        ) : (
-          <p>No tasks</p>
-        )}
-      </Section>
-    </Container>
+    <div>
+      <button onClick={() => setCounter(counter + 1)}>Increment</button>
+      <button onClick={() => setCounter1(counter1 + 1)}>Increment1</button>
+    </div>
   );
 }
 
