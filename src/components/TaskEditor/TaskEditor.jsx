@@ -5,18 +5,27 @@ import Button from '../Button/Button';
 import Input from '../Input/Input';
 
 function TaskEditor({ onCreate }) {
-  const [text, setText] = useState('');
-  const [error, setError] = useState('');
+  const [text, setText] = useState({
+    value: '',
+    error: '',
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (text === '') {
-      setError('Будь ласка введіть текст');
+    if (text.value === '') {
+      setText({
+        // value: text.value,
+        ...text,
+        error: 'Будь ласка введіть текст',
+      });
     } else {
-      setError('');
-      onCreate(text);
-      setText('');
+      onCreate(text.value);
+
+      setText({
+        value: '',
+        error: '',
+      });
     }
   }
 
@@ -24,9 +33,9 @@ function TaskEditor({ onCreate }) {
     <form className={styles.container} onSubmit={handleSubmit}>
       <Input
         placeholder="Enter todo text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        error={error}
+        value={text.value}
+        onChange={(e) => setText({ ...text, value: e.target.value })}
+        error={text.error}
         isTextArea
       />
 

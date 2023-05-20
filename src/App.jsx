@@ -6,6 +6,7 @@ import TaskList from './components/TaskList/TaskList';
 import TaskEditor from './components/TaskEditor/TaskEditor';
 import Input from './components/Input/Input';
 import Section from './components/Section';
+import Button from './components/Button/Button';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -42,6 +43,13 @@ function App() {
     );
   }
 
+  function reverseTasks() {
+    // Перед сортуванням через sort теж робимо копію
+    // setTasks((prevTasks) => [...prevTasks].reverse()); // Spread operator
+    // setTasks([...tasks].reverse()); // Spread operator
+    setTasks(tasks.slice().reverse()); // Slice method
+  }
+
   const filteredTasks = tasks.filter((task) => {
     return task.text.includes(query);
     // if (task.text.includes(query)) {
@@ -66,6 +74,8 @@ function App() {
       </Section>
 
       <Section title="Tasks">
+        <Button onClick={reverseTasks}>Reverse</Button>
+
         {filteredTasks.length > 0 ? (
           <TaskList
             tasks={filteredTasks}
