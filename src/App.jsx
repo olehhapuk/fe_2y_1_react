@@ -1,25 +1,16 @@
-import { useState, useEffect } from 'react';
+import Modal from './components/Modal';
+import Timer from './components/Timer';
+import InputHandler from './components/InputHandler';
 
 function App() {
-  const [counter, setCounter] = useState(0);
-  const [counter1, setCounter1] = useState(0);
-
-  useEffect(() => {
-    console.log('render');
-  });
-
-  useEffect(() => {
-    console.log('first render');
-  }, []);
-
-  useEffect(() => {
-    console.log('counter render');
-  }, [counter]);
-
   return (
     <div>
-      <button onClick={() => setCounter(counter + 1)}>Increment</button>
-      <button onClick={() => setCounter1(counter1 + 1)}>Increment1</button>
+      <Modal title="Timer">
+        <Timer />
+      </Modal>
+      <Modal title="Input Handler">
+        <InputHandler />
+      </Modal>
     </div>
   );
 }
