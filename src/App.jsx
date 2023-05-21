@@ -1,17 +1,36 @@
-import Modal from './components/Modal';
-import Timer from './components/Timer';
-import InputHandler from './components/InputHandler';
+import {
+  Container,
+  Typography,
+  Paper,
+  TextField,
+  Button,
+  Stack,
+} from '@mui/material';
 
 function App() {
   return (
-    <div>
-      <Modal title="Timer">
-        <Timer />
-      </Modal>
-      <Modal title="Input Handler">
-        <InputHandler />
-      </Modal>
-    </div>
+    <Container>
+      <Typography variant="h3">Phonebook</Typography>
+      <Paper
+        elevation={5}
+        sx={{
+          padding: '18px',
+        }}
+      >
+        <Stack
+          direction="column"
+          gap="8px"
+          alignItems="start"
+          component="form"
+          onSubmit={() => {}}
+        >
+          <TextField label="Name" error={false} helperText="testerror" />
+          <Button color="success" variant="contained" type="submit">
+            Add contact
+          </Button>
+        </Stack>
+      </Paper>
+    </Container>
   );
 }
 
