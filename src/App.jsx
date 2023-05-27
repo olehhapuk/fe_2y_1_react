@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 
 import Container from './components/Container/Container';
@@ -8,9 +8,23 @@ import Input from './components/Input/Input';
 import Section from './components/Section';
 import Button from './components/Button/Button';
 
+function initTasksState() {
+  const persistedTasks = localStorage.getItem('tasks');
+
+  if (persistedTasks) {
+    return JSON.parse(persistedTasks);
+  } else {
+    return [];
+  }
+}
+
 function App() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(initTasksState);
   const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   function createTask(text) {
     const newTask = {
@@ -44,19 +58,11 @@ function App() {
   }
 
   function reverseTasks() {
-    // Перед сортуванням через sort теж робимо копію
-    // setTasks((prevTasks) => [...prevTasks].reverse()); // Spread operator
-    // setTasks([...tasks].reverse()); // Spread operator
-    setTasks(tasks.slice().reverse()); // Slice method
+    setTasks(tasks.slice().reverse());
   }
 
   const filteredTasks = tasks.filter((task) => {
     return task.text.includes(query);
-    // if (task.text.includes(query)) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   });
 
   return (
