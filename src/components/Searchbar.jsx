@@ -1,24 +1,27 @@
-import { useState } from 'react';
+import { useRef, useEffect } from 'react';
+import { DebounceInput } from 'react-debounce-input';
 
 function Searchbar({ onSearch }) {
-  const [query, setQuery] = useState('');
+  const inputRef = useRef(null);
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  useEffect(() => {
+    // if (inputRef.current) {
+    //   inputRef.current.focus();
+    // }
 
-    onSearch(query);
-  }
+    inputRef.current?.focus();
+  }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
+    <div>
+      <DebounceInput
+        inputRef={inputRef}
         type="search"
         placeholder="Search..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => onSearch(e.target.value)}
+        debounceTimeout={350}
       />
-      <button type="submit">Search</button>
-    </form>
+    </div>
   );
 }
 

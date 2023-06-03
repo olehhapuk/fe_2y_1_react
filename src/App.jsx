@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { TailSpin } from 'react-loader-spinner';
+import { useInView } from 'react-intersection-observer';
 
 import Searchbar from './components/Searchbar';
 import ArticlesList from './components/ArticlesList';
@@ -12,6 +13,35 @@ function App() {
   const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
 
+  // const loadMoreBtnRef = useRef(null);
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver((entries) => {
+  //     entries.forEach((entry) => {
+  //       if (entry.isIntersecting && query) {
+  //         loadMore();
+  //       }
+  //     });
+  //   });
+
+  //   observer.observe(loadMoreBtnRef.current);
+
+  //   return () => {
+  //     observer.disconnect();
+  //   };
+  // }, [query]);
+
+  const { ref } = useInView({
+    threshold: 0,
+    onChange: (inView) => {
+      console.log('inView', inView);
+
+      if (inView && query) {
+        loadMore();
+      }
+    },
+  });
+
   useEffect(() => {
     if (query === '') {
       return;
@@ -20,22 +50,30 @@ function App() {
     setLoading(true);
     setError(null);
 
-    fetchArticles(query, page)
+    const controller = new AbortController();
+
+    fetchArticles(query, page, controller)
       .then((res) => {
         setArticles((prevArticles) => [...prevArticles, ...res.hits]);
       })
       .catch((err) => {
-        setError(err.message);
-        console.dir(err);
+        if (err.code === 'ERR_CANCELED') {
+          console.dir(err);
+        } else {
+          setError(err.message);
+        }
       })
       .finally(() => setLoading(false));
+
+    return () => {
+      controller.abort();
+    };
   }, [page, query]);
 
   function search(newQuery) {
     setQuery(newQuery);
     setPage(0);
     setArticles([]);
-    // batching - групування оновлення стану
   }
 
   function loadMore() {
@@ -51,8 +89,12 @@ function App() {
       {error && <p>{error}</p>}
       {!error && articles.length > 0 && <ArticlesList articles={articles} />}
 
-      <TailSpin visible={loading} />
-      <button onClick={loadMore}>Load more</button>
+      {loading && !error && <TailSpin />}
+      {!loading && !error && (
+        <button ref={ref} onClick={loadMore}>
+          Load more
+        </button>
+      )}
     </div>
   );
 }
