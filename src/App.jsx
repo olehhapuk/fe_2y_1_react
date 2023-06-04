@@ -10,26 +10,10 @@ function App() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(0);
   const [query, setQuery] = useState('');
 
-  // const loadMoreBtnRef = useRef(null);
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver((entries) => {
-  //     entries.forEach((entry) => {
-  //       if (entry.isIntersecting && query) {
-  //         loadMore();
-  //       }
-  //     });
-  //   });
-
-  //   observer.observe(loadMoreBtnRef.current);
-
-  //   return () => {
-  //     observer.disconnect();
-  //   };
-  // }, [query]);
+  const [page, setPage] = useState(0);
+  const [pagesCount, setPagesCount] = useState(0);
 
   const { ref } = useInView({
     threshold: 0,
@@ -55,10 +39,13 @@ function App() {
     fetchArticles(query, page, controller)
       .then((res) => {
         setArticles((prevArticles) => [...prevArticles, ...res.hits]);
+        setPagesCount(res.nbPages);
+        setPage(res.page);
       })
       .catch((err) => {
         if (err.code === 'ERR_CANCELED') {
           console.dir(err);
+          setError(null);
         } else {
           setError(err.message);
         }
@@ -72,8 +59,9 @@ function App() {
 
   function search(newQuery) {
     setQuery(newQuery);
-    setPage(0);
     setArticles([]);
+    setPage(0);
+    setPagesCount(0);
   }
 
   function loadMore() {
@@ -90,7 +78,7 @@ function App() {
       {!error && articles.length > 0 && <ArticlesList articles={articles} />}
 
       {loading && !error && <TailSpin />}
-      {!loading && !error && (
+      {!loading && !error && page < pagesCount && (
         <button ref={ref} onClick={loadMore}>
           Load more
         </button>
