@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
+import { TailSpin } from 'react-loader-spinner';
 
 import Container from './components/Container/Container';
 import TaskList from './components/TaskList/TaskList';
@@ -7,6 +7,7 @@ import TaskEditor from './components/TaskEditor/TaskEditor';
 import Input from './components/Input/Input';
 import Section from './components/Section';
 import Button from './components/Button/Button';
+import * as tasksService from './services/tasksService';
 
 function initTasksState() {
   const persistedTasks = localStorage.getItem('tasks');
@@ -21,23 +22,54 @@ function initTasksState() {
 function App() {
   const [tasks, setTasks] = useState(initTasksState);
   const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
+  useEffect(() => {
+    setLoading(true);
+
+    tasksService
+      .getTasks()
+      .then((data) => {
+        setTasks(data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
   function createTask(text) {
     const newTask = {
       text: text,
       completed: false,
-      id: nanoid(),
     };
 
-    setTasks((prevTasks) => [newTask, ...prevTasks]);
+    setLoading(true);
+
+    tasksService
+      .createTask(newTask)
+      .then((data) => {
+        setTasks((prevTasks) => [data, ...prevTasks]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function removeTask(id) {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    setLoading(true);
+
+    tasksService
+      .deleteTask(id)
+      .then(() => {
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function updateTask(id, completed) {
@@ -81,6 +113,8 @@ function App() {
 
       <Section title="Tasks">
         <Button onClick={reverseTasks}>Reverse</Button>
+
+        <TailSpin visible={loading} />
 
         {filteredTasks.length > 0 ? (
           <TaskList

@@ -1,0 +1,9 @@
+{
+  "tasks": [
+    {
+      "text": "Test json-server on client",
+      "completed": false,
+      "id": 3
+    }
+  ]
+}
