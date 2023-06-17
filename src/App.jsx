@@ -1,24 +1,35 @@
-import { useState } from 'react';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
-import Modal from './components/Modal';
+import Searchbar from './components/Searchbar';
+import ImageGallery from './components/ImageGallery';
+import Loader from './components/Loader';
 
 function App() {
-  const [images, setImages] = useState(['img-1', 'img-2', 'img-3']);
-  const [activeImage, setActiveImage] = useState(null);
+  const [images, setImages] = useState([]);
 
-  function closeModal() {
-    setActiveImage(null);
-  }
+  useEffect(() => {
+    axios
+      .get('https://pixabay.com/api/', {
+        params: {
+          q: 'cat',
+          page: 1,
+          key: '18873751-8e18f299cbfc24db3206257a6',
+          image_type: 'photo',
+          orientation: 'horizontal',
+          per_page: 12,
+        },
+      })
+      .then((res) => {
+        setImages(res.data.hits);
+      });
+  }, []);
 
   return (
-    <div>
-      {images.map((img) => (
-        <button key={img} onClick={() => setActiveImage(img)}>
-          {img}
-        </button>
-      ))}
-
-      {activeImage && <Modal img={activeImage} onClose={closeModal} />}
+    <div className="App">
+      <Searchbar />
+      <ImageGallery images={images} />
+      <Loader />
     </div>
   );
 }
